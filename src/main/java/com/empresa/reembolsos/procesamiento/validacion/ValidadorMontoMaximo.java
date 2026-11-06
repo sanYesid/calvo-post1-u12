@@ -8,7 +8,8 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 
 /**
- * Eslabón de validación que verifica que el monto solicitado no supere el tope de su categoría.
+ * Eslabón de validación que verifica que el monto solicitado no supere el tope de su categoría
+ * y que una solicitud de viaje indique al menos un día de viaje.
  */
 @Component
 public class ValidadorMontoMaximo extends ValidadorSolicitud {
@@ -20,6 +21,9 @@ public class ValidadorMontoMaximo extends ValidadorSolicitud {
 
     @Override
     protected ResultadoValidacion validarPropio(SolicitudReembolso solicitud, List<SolicitudReembolso> pendientes) {
+        if (solicitud.getCategoria() == CategoriaGasto.VIAJE && solicitud.getDiasViaje() <= 0) {
+            return ResultadoValidacion.rechazar("Una solicitud de viaje requiere al menos 1 dia de viaje");
+        }
         var tope = TOPES.get(solicitud.getCategoria());
         return solicitud.getMontoSolicitado().compareTo(tope) > 0
                 ? ResultadoValidacion.rechazar("Monto excede el tope de la categoria " + solicitud.getCategoria())
