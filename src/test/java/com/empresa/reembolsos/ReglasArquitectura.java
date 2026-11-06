@@ -17,14 +17,15 @@ import com.tngtech.archunit.lang.ArchRule;
 @AnalyzeClasses(packages = "com.empresa.reembolsos", importOptions = ImportOption.DoNotIncludeTests.class)
 public class ReglasArquitectura {
 
-    // Regla 1: procesamiento no depende de infraestructura, adaptadores ni JPA
+        // Regla 1: procesamiento no depende de infraestructura, adaptadores, persistencia ni capa web
     @ArchTest
     static final ArchRule procesamientoSinPersistenciaNiWeb = noClasses()
             .that().resideInAPackage("..procesamiento..")
             .should().dependOnClassesThat()
             .resideInAnyPackage(
                     "..infraestructura..", "..adaptadores..",
-                    "org.springframework.data..", "jakarta.persistence..");
+                    "org.springframework.data..", "jakarta.persistence..",
+                    "org.springframework.web..", "org.springframework.http..");
 
     // Regla 2: el controlador solo accede al servicio de aplicacion y al dominio
     @ArchTest
