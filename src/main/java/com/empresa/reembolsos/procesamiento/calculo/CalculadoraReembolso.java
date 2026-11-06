@@ -10,7 +10,18 @@ import java.math.BigDecimal;
  */
 public interface CalculadoraReembolso {
 
+    /**
+     * Categoría de gasto que atiende esta estrategia; {@link SelectorCalculadora} la usa como clave del mapa.
+     *
+     * @return la categoría soportada por esta calculadora
+     */
     CategoriaGasto getCategoria();
 
+    /**
+     * Calcula el monto aprobado aplicando la fórmula propia de la categoría.
+     *
+     * @param solicitud solicitud que ya superó la cadena de validación
+     * @return monto aprobado, nunca mayor que el monto solicitado
+     */
     BigDecimal calcular(SolicitudReembolso solicitud);
 }
