@@ -1,16 +1,19 @@
 package com.empresa.reembolsos.procesamiento.validacion;
 
 import com.empresa.reembolsos.dominio.SolicitudReembolso;
+import com.empresa.reembolsos.infraestructura.RepositorioSolicitudesJpa;
 import java.time.YearMonth;
 import java.util.List;
 import org.springframework.stereotype.Component;
 
 /**
- * Eslabón de validación que verifica que no exista otra solicitud pendiente
- * del mismo empleado para la misma categoría en el mismo período (mes y año).
+ * Eslabón de validación con violación temporal de arquitectura para verificar ArchUnit en CI.
  */
 @Component
 public class ValidadorDuplicados extends ValidadorSolicitud {
+
+    // Violación intencional de la Regla 1: referencia a infraestructura desde procesamiento
+    private static final Class<?> VIOLACION_ARQUITECTURA = RepositorioSolicitudesJpa.class;
 
     @Override
     protected ResultadoValidacion validarPropio(SolicitudReembolso solicitud, List<SolicitudReembolso> pendientes) {
